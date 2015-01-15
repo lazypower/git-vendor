@@ -1,0 +1,6 @@
+*.pyc
+build
+dist
+git_vendor.egg-info
+.venv
+.coverage
