@@ -4,13 +4,16 @@ import logging
 import sys
 
 
-def basic_args(parser):
-    parser.add_argument('-d', '--directory', help='Directory for vendoring')
-    parser.add_argument('-t', '--tag', help='Tag to vendor')
+def global_args(parser):
     parser.add_argument('--debug', action='store_true',
                         help='display debug output')
     parser.add_argument('-q', '--quiet', action='store_true',
                         help='squash all output')
+
+
+def basic_args(parser):
+    parser.add_argument('-d', '--directory',
+                        default='.', help='Repository dir for vendoring')
 
 
 def setup_parser():
@@ -18,10 +21,17 @@ def setup_parser():
                                 description='Vendor git repositories easily')
     sp = p.add_subparsers(dest='action', metavar='actions')
 
-    sp.add_parser('init', help='Create sync configuration')
+    init = sp.add_parser('init', help='Create sync configuration')
     sync = sp.add_parser('sync', help='Vendor code')
-    basic_args(sync)
     sp.add_parser('version', help='print version')
+
+    # add subcommand options
+    global_args(init)
+    global_args(sync)
+    basic_args(init)
+    basic_args(sync)
+    sync.add_argument('-t', '--tag', help='Tag to vendor')
+
     return p
 
 
@@ -58,7 +68,7 @@ def main(args=None):
         print pkg_resources.require('git-vendor')[0].version
         sys.exit(0)
 
-    log = setup_logging(debug=known.debug)
+    log = setup_logging(known.debug)
 
     try:
         action = importlib.import_module("..%s" % known.action,
