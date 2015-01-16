@@ -23,7 +23,7 @@ setuptools.setup(name='git-vendor',
                          'git-vendor = gitvendor.cli:main'
                          ],
                      },
-                 install_requires=['gitpython', 'jinja2'],
+                 install_requires=['gitpython', 'jinja2', 'pyyaml'],
                  license='MIT License',
                  zip_safe=False,
                  keywords='git, vendor',
