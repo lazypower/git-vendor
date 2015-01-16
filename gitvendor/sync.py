@@ -1,10 +1,11 @@
+from dirsync import sync
 from git import Repo, Git
 from helpers import is_repository_clean, is_path_sane
 from helpers import is_repository_initialized, parse_omissions
 from helpers import delete_file_or_directory
 import logging
 import os
-import shutil
+from path import path
 from tempfile import mkdtemp
 log = logging.getLogger('git-vendor.sync')
 
@@ -38,12 +39,14 @@ def prep_export(tag, repository):
 
 
 def overwrite_with_export(repo, output):
+    repo = path(repo)
+    output = path(output)
     if not os.path.exists(output):
         log.critical("Output dir does not exist: {}".format(output))
         create = raw_input("Shall I create the output directory? [N/y] ")
         if create is 'y' or create is 'Y':
             os.mkdir(output)
-    shutil.copytree(repo, output)
+    sync(repo, output, 'sync')
 
 
 def garbage_collection(tmpdir, repo):
@@ -67,6 +70,8 @@ def main(args, debug):
     if not args.directory:
         log.critical('Missing output directory argument')
         return 1
+    if not args.repo:
+        args.repo = '.'
     path = is_path_sane(args.repo)
     dirty = is_repository_clean(args.repo)
     initialized = is_repository_initialized(args.repo)

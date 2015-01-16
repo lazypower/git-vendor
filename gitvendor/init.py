@@ -23,6 +23,8 @@ def render_template(directory):
 
 
 def main(args, debug):
+    if not args.repo:
+        args.repo = '.'
     path = is_path_sane(args.repo)
     dirty = is_repository_clean(args.repo)
     initialized = is_repository_initialized(args.repo)
