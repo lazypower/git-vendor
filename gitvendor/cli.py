@@ -12,8 +12,7 @@ def global_args(parser):
 
 
 def basic_args(parser):
-    parser.add_argument('-d', '--directory',
-                        default='.', help='Repository dir for vendoring')
+    parser.add_argument('-r', '--repo', help='Repository to vendor')
 
 
 def setup_parser():
@@ -31,6 +30,8 @@ def setup_parser():
     basic_args(init)
     basic_args(sync)
     sync.add_argument('-t', '--tag', help='Tag to vendor')
+    sync.add_argument('-d', '--directory',
+                      default='.', help='Output Directory')
 
     return p
 
@@ -47,7 +48,7 @@ def setup_logging(debug=None):
     if debug:
         f = '%(asctime)s %(levelname)s %(name)s: %(message)s'
     else:
-        f = '%(levelname)s %(name)s: %(message)s'
+        f = '%(levelname)s: %(message)s'
 
     formatter = logging.Formatter(f)
     ch.setFormatter(formatter)
@@ -62,7 +63,7 @@ def setup_logging(debug=None):
 def main(args=None):
     parser = setup_parser()
     known, unknown = parser.parse_known_args(args)
-
+    exit = 0
     if known.action == 'version':
         import pkg_resources
         print pkg_resources.require('git-vendor')[0].version
@@ -77,7 +78,9 @@ def main(args=None):
     except Exception as e:
         if known.debug:
             log.exception(e.message)
+            exit = 1
         else:
+            print(e)
             log.critical(e.message)
             exit = 1
 

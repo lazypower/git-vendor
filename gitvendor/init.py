@@ -1,4 +1,5 @@
-from helpers import repository_sanity, is_path_sane
+from helpers import is_repository_clean, is_path_sane
+from helpers import is_repository_initialized
 import logging
 from jinja2 import Template
 import os
@@ -8,18 +9,30 @@ base_omissions = ['.git', '.gitignore', '.gitmodules', 'revision']
 
 
 def render_template(directory):
-    template_path = "{}/templates/vendor-rc".format(os.path.abspath(__file__))
+    filepath = os.path.dirname(os.path.abspath(__file__))
+    template_path = "{}/template/vendor-rc".format(filepath)
     with open(template_path, 'r') as f:
         raw = f.read()
     template = Template(raw)
-    print template.render(omit=base_omissions)
+    content = template.render(omit=base_omissions)
+    cfgpath = os.path.join(os.path.realpath(directory), '.vendor-rc')
+    with open("{}".format(cfgpath), 'w+') as f:
+        f.write(content)
+    log.info("Initialized repository {}. You can modify the omitted files"
+             " by editing {}.vendor-rc".format(directory, directory))
 
 
 def main(args, debug):
-    path = is_path_sane(args.directory)
-    dirty = repository_sanity(args.directory)
+    path = is_path_sane(args.repo)
+    dirty = is_repository_clean(args.repo)
+    initialized = is_repository_initialized(args.repo)
 
-    if path or dirty:
+    if not path and not dirty:
         return
 
-    render_template(args.directory)
+    if initialized:
+        log.warn('Repository: {} already initialized.'
+                 ' Doing nothing'.format(args.repo))
+        return
+
+    render_template(args.repo)
