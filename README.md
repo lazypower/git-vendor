@@ -13,4 +13,39 @@ I'm not so much concerned with the commit history as I am with ensuring my tags 
 The plugin only works with git tags, and will not operate on a dirty branch. This allows me to adopt the workflow of cycle until features/bugs are complete in a given milestone. Export that code to the bzr repository and run a checkin of everything that happened from A -> Z along with a Changelog to track what happened independently of the BZR VCS.  This is a fairly simple process that can be done manually without much fuss - but like anything I do repeatedly: it's even nicer to have a tool do the drone work for me.
 
 
+## Getting Started
+
+Clone the repository
+
+    git clone http://github.com/chuckbutler/git-vendor.git
+    cd git-vendor
+
+Create a virtualenv to isolate dependencies from your system
+
+    virtualenv .venv/
+    source .venv/bin/activate
+    python setup.py install
+
+While the virtual env is active, you can call git-vendor like you would any other executable.
+
+    git-vendor -h
+
+#### Basic Usage
+
+git-vendor works with a single initialized configuration file.
+
+    git-vendor init
+
+This will create a .vendor-rc file which you can edit and place ignored files. It's pre-populated
+with some common patterns for you.
+
+    git tag mytag
+
+When you are ready to vendor a git repository to bzr:
+
+    git-vendor sync -d /path/to/bzr/repository
+
+you will be presented with a list of tags from your git repo to pick and export. Now you can head
+over to your bzr repository, commit and push as you see fit. Enjoy!
+
 
