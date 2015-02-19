@@ -67,9 +67,6 @@ def run_export(repo, outdir=None):
 
 
 def main(args, debug):
-    if not args.directory:
-        log.critical('Missing output directory argument')
-        return 1
     if not args.repo:
         args.repo = '.'
     path = is_path_sane(args.repo)
@@ -82,6 +79,10 @@ def main(args, debug):
     if not initialized:
         log.warn("Directory: {} is not initialized. Perhaps you meant to"
                  " git-vendor init?".format(args.repo))
+        return 1
+
+    if not args.directory and not len(args.directory) == 0:
+        print "no directory"
         return 1
 
     repository = Repo(args.repo)
