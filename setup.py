@@ -10,12 +10,13 @@ CLASSIFIERS = [
 ]
 
 setuptools.setup(name='git-vendor',
-                 version=Version('0.0.1').number,
+                 version=Version('0.0.3').number,
                  description='Vendor tagged releases from git to $VCS',
                  long_description=open('README.md').read().strip(),
                  author='Charles Butler',
                  author_email='charles.butler@ubuntu.com',
                  url='http://github.com/chuckbutler/git-vendor',
+                 download_url='https://github.com/chuckbutler/git-vendor/releases/',
                  py_modules=[],
                  packages=find_packages(),
                  entry_points={
