@@ -15,6 +15,14 @@ The plugin only works with git tags, and will not operate on a dirty branch. Thi
 
 ## Getting Started
 
+This package is installable from pip
+
+    pip install git-vendor
+
+
+
+## Developer Getting Started
+
 Clone the repository
 
     git clone http://github.com/chuckbutler/git-vendor.git
