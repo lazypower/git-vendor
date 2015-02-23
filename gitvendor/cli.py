@@ -78,13 +78,11 @@ def main(args=None):
     except Exception as e:
         if known.debug:
             log.exception(e.message)
-            exit = 1
+            sys.exit(exit)
         else:
             print(e)
             log.critical(e.message)
-            exit = 1
-
-    sys.exit(exit)
+            sys.exit(exit)
 
 if __name__ == "__main__":
     main()
