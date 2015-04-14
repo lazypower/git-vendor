@@ -7,12 +7,12 @@ import yaml
 log = logging.getLogger('git-vendor.helpers')
 
 
-def is_repository_clean(directory):
+def is_repository_clean(directory, force):
     """ repository_sanity: predicate method for checking the status of a dirty'
     repository"""
 
     repo = Repo(directory)
-    if repo.is_dirty():
+    if repo.is_dirty() and not force:
         log.warn('Repository is dirty, doing nothing')
         return False
     return True

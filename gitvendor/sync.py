@@ -70,7 +70,8 @@ def main(args, debug):
     if not args.repo:
         args.repo = '.'
     path = is_path_sane(args.repo)
-    dirty = is_repository_clean(args.repo)
+    force = args.allow_dirty
+    dirty = is_repository_clean(args.repo, force)
     initialized = is_repository_initialized(args.repo)
 
     if not path and not dirty:

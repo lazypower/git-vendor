@@ -32,6 +32,8 @@ def setup_parser():
     sync.add_argument('-t', '--tag', help='Tag to vendor')
     sync.add_argument('-d', '--directory',
                       default='.', help='Output Directory')
+    sync.add_argument('--allow-dirty', action='store_true',
+                      help='Allow operations on a dirty repository')
 
     return p
 
