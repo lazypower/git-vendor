@@ -26,14 +26,14 @@ class TestHelpers():
     @patch('gitvendor.helpers.Repo.is_dirty')
     def test_repository_clean(self, repomock):
         repomock.return_value = False
-        ret = helpers.is_repository_clean(self.repo)
+        ret = helpers.is_repository_clean(self.repo, False)
         assert repomock.is_dirty.called_once()
         assert ret is True
 
     @patch('gitvendor.helpers.Repo.is_dirty')
     def test_repository_dirty(self, repomock):
         repomock.return_value = True
-        ret = helpers.is_repository_clean(self.repo)
+        ret = helpers.is_repository_clean(self.repo, False)
         assert repomock.is_dirty.called_once()
         assert ret is False
 
